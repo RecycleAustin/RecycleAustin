@@ -73,11 +73,18 @@ public class MainActivity extends ActionBarActivity {
         private AlertDialog alert;
         private String URLaddress = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
+        /*
+        *   This constructor takes the address that was put into the text field and also the alert dialog
+        *   that was shown when the "Send" button was pressed
+        */
+
         private GoogleHTTPGetRequest(String addr, AlertDialog alt) {
             alert = alt;
             addr = addr.trim().replace(" ", "+");
             URLaddress += addr + "+Austin,+Texas&key=AIzaSyCVfKDEiicmXo56w2Jrz0GHJ9z4wocMnoM";
         }
+
+        //////// If doing reverse geocoding, use https://maps.googleapis.com/maps/api/geocode/json?latlng={lat},{lng}&key={API_KEY} ///////////////
 
         @Override
         protected List<String> doInBackground(Void... params) {
@@ -101,6 +108,11 @@ public class MainActivity extends ActionBarActivity {
             return data;
         }
 
+        /*
+        *   This method takes the entire JSON response and puts it into a StringBuilder object
+        *
+        */
+
         protected List<String> readStream(InputStream in) {
             BufferedReader br = null;
             StringBuilder sb = new StringBuilder();
@@ -122,6 +134,14 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
 
+            /*
+            *   This section of the method turns the StringBuilder to a String and breaks it up into the
+            *   info I need: the number of the address (e.g. 1712) and the street name
+            *   (e.g. West 11th Street).  It stores that info in an ArrayList.
+            *   Check https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding for
+            *   JSON structure.
+            */
+
             String houseNumber = null;
             String streetName = null;
             List<String> address = new ArrayList<String>();
@@ -135,20 +155,25 @@ public class MainActivity extends ActionBarActivity {
                 houseNumber = houseNo.getString("long_name");
                 streetName = streetComps.getString("long_name");
             } catch (JSONException e) {
-                e.printStackTrace();
+                address.add("problem");
             }
             if (houseNumber != null && streetName != null) {
                 address.add(houseNumber);
                 address.add(streetName);
                 return address;
             }
-            address.add("problem");
             return address;
         }
 
+        /*
+        *   On post execute, if the address is valid, pass the house number and street name to the next
+        *   HTTPGetRequest.  If the address came back from Google with no response, make an error Toast
+        *   and return.
+        */
+
         @Override
         protected void onPostExecute(List<String> address) {
-            if (address == null) {
+            if (address.get(0).equals("problem")) {
                 alert.dismiss();
                 Toast.makeText(MainActivity.this, "Problem getting correct address", Toast.LENGTH_SHORT).show();
                 return;
