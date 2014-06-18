@@ -4,5 +4,9 @@
     <string name="app_name">Recycle Austin</string>
     <string name="hello_world">Hello Droids!</string>
     <string name="action_settings">Settings</string>
+    <string name="send">Send</string>
+    <string name="enter_address_here">Enter Your Address Here</string>
+    <string name="city">City</string>
+    <string name="zip">Zip Code</string>
 
 </resources>
