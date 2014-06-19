@@ -17,7 +17,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.StubActivity"
+            android:name=".activities.ScheduleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FindRecycleServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CheckRecyclableActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RecycleLocationsActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -36,7 +36,26 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        Intent intent = new Intent(this, StubActivity.class);
+        Intent intent;
+
+        switch (position) {
+            case 0:
+                intent = new Intent(this, ScheduleActivity.class);
+                break;
+            case 1:
+                intent = new Intent(this, RecycleLocationsActivity.class);
+                break;
+            case 2:
+                intent = new Intent(this, FindRecycleServiceActivity.class);
+                break;
+            case 3:
+                intent = new Intent(this, CheckRecyclableActivity.class);
+                break;
+            default:
+                intent = new Intent(this, ScheduleActivity.class);
+                break;
+        }
+
         startActivity(intent);
     }
 }
