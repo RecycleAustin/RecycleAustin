@@ -2,7 +2,139 @@
 <resources>
 
     <string name="app_name">Recycle Austin</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello World</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_recycle_flow_screen">Recycle Flow</string>
+
+    <!--
+   App data found at:
+   http://austintexas.gov/department/single-stream-recycling
+   http://austintexas.gov/what-do-i-do/p
+
+    -->
+
+
+    <!-- List of major item categories -->
+
+    <string name="paper">Paper</string>
+    <string name="aluminumMetals">Aluminum and Metals</string>
+    <string name="boxCardBoard">Boxboards and Cardboard</string>
+    <string name="glass">Glass</string>
+    <string name="plastics">Plastics</string>
+    <string name="rigidPlastics">Rigid Plastic Containers (Labeled #1-7)</string>
+    <string name="organicMatter">Organic Matter</string>
+
+
+    <string-array name="majorOptions">
+        <item>@string/paper</item>
+        <item>@string/boxCardBoard</item>
+        <item>@string/aluminumMetals</item>
+        <item>@string/glass</item>
+        <item>@string/plastics</item>
+        <item>@string/rigidPlastics</item>
+        <item>@string/organicMatter</item>
+
+    </string-array>
+
+
+
+    <!-- Organized list of sub-items by category -->
+
+    <string-array name="paperOptions">
+        <item>Glossy and Matte paper</item>
+        <item>Envelopes</item>
+        <item>Junk mail</item>
+        <item>Greeting cards</item>
+        <item>Catalogs</item>
+        <item>Newspapers</item>
+        <item>Coupons </item>
+        <item>Posters</item>
+        <item>Sticky Notes</item>
+        <item>Paper Bags</item>
+        <item>Wrapping Paper (non-foil)</item>
+        <item>Magazines</item>
+
+
+    </string-array>
+
+    <string-array name="boxCardBoardOptions">
+        <item>@string/cardBoard</item>
+        <item>@string/boxBoard</item>
+        <item>@string/shoeBox</item>
+        <item>@string/pizzaBox</item>  <!-- non-recyclable -->
+
+
+    </string-array>
+
+
+    <string-array name="alumninumMetalsOptions">
+        <item>@string/dummyFalseItem</item>
+        <item>@string/boxBoard</item>
+        <item>@string/shoeBox</item>
+        <item>@string/pizzaBox</item>
+
+
+    </string-array>
+
+
+    <string-array name="glassOptions">
+        <item>@string/dummyFalseItem</item>
+        <item>@string/boxBoard</item>
+        <item>@string/shoeBox</item>
+        <item>@string/pizzaBox</item>
+
+
+    </string-array>
+
+
+    <string-array name="plasticsOptions">
+        <item>@string/dummyTrueItem</item>
+        <item>@string/boxBoard</item>
+        <item>@string/shoeBox</item>
+        <item>@string/pizzaBox</item>  <!-- non-recyclable -->
+
+
+    </string-array>
+
+
+
+    <string-array name="rigidPlasticsOptions">
+        <item>@string/dummyTrueItem</item>
+        <item>@string/boxBoard</item>
+        <item>@string/shoeBox</item>
+        <item>@string/pizzaBox</item>  <!-- non-recyclable -->
+
+
+    </string-array>
+
+
+    <string-array name="organicMatterOptions">
+        <item>@string/food</item>
+        <item>@string/yardLeaves</item>
+
+
+    </string-array>
+
+
+    <string-array name="dummyItemsOptions">
+        <item>@string/dummyTrueItem</item>
+        <item>@string/dummyFalseItem</item>
+
+
+    </string-array>
+
+
+
+    <!-- List of sub-items -->
+
+    <string name="shoeBox">Shoe box</string>
+    <string name="pizzaBox">Pizza box</string>
+    <string name="boxBoard">Boxboard</string>
+    <string name="cardBoard">Corrugated Cardboard</string>
+    <string name="food">Food</string>
+    <string name="yardLeaves">Yard Leaves</string>
+    <string name="dummyTrueItem">DUMMY RECYCLABLE ITEM</string>
+    <string name="dummyFalseItem">DUMMY NON-RECYCLABLE ITEM</string>
+
 
 </resources>

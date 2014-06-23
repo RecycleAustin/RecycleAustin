@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\jbt\Documents\GitHub\RecycleAustin\Recycle Austin\build\pre-dexed\debug\support-v4-19.1.0-ace3ea126d87d55ab374759052119218eb915a26.jar"
+        jar="C:\Users\jbt\AndroidStudio\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="C:\Users\jbt\Documents\GitHub\RecycleAustin\Recycle Austin\build\pre-dexed\debug\classes-caa062fd57dd48ed6f72eaf87244f2d81286d1e5.jar"
+        jar="C:\Users\jbt\Documents\GitHub\RecycleAustin\build\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+
+</pre-dex-items>
