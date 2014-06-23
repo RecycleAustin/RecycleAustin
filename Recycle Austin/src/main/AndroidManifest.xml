@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.austindroids.recycleaustin.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ScheduleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FindRecycleServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CheckRecyclableActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RecycleLocationsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
