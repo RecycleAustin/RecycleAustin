@@ -1,4 +1,4 @@
-package com.austindroids.recycleaustin;
+package com.austindroids.recycleaustin.sodaquery;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.austindroids.recycleaustin;
+package com.austindroids.recycleaustin.sodaquery;
 
 import android.app.AlertDialog;
 import android.os.AsyncTask;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.austindroids.recycleaustin.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity {
+public class SodaQueryActivity extends ActionBarActivity {
     private Button sendButton;
     private EditText addressField;
     private TextView addressTest;
@@ -40,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sodaquery);
 
         addressTest = (TextView) findViewById(R.id.test_address);
         sendButton = (Button) findViewById(R.id.send_button);
@@ -175,7 +177,7 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(List<String> address) {
             if (address.get(0).equals("problem")) {
                 alert.dismiss();
-                Toast.makeText(MainActivity.this, "Problem getting correct address", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SodaQueryActivity.this, "Problem getting correct address", Toast.LENGTH_SHORT).show();
                 return;
             }
             addressTest.setText(address.get(0) + " " + address.get(1));
@@ -300,7 +302,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.sodaquery, menu);
         return true;
     }
 
