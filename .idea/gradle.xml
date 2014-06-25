@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\jbt\Documents\GitHub\RecycleAustin" />
-            <option value="C:\Users\jbt\Documents\GitHub\RecycleAustin\Recycle Austin" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Recycle Austin" />
           </set>
         </option>
       </GradleProjectSettings>

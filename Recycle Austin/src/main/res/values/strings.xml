@@ -4,6 +4,7 @@
     <string name="app_name">Recycle Austin</string>
     <string name="hello_world">Hello World</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_appteam">App Team</string>
     <string name="title_activity_recycle_flow_screen">Recycle Flow</string>
 
     <!--
