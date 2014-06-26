@@ -1,11 +1,9 @@
-package com.austindroids.recycleaustin.sodaquery;
+package com.austindroids.recycleaustin.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.austindroids.recycleaustin.R;
+import com.austindroids.recycleaustin.sodaquery.StreetDirectionMap;
+import com.austindroids.recycleaustin.sodaquery.StreetTypeMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;

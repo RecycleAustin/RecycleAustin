@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         switch (position) {
             case 0:
-                intent = new Intent(this, ScheduleActivity.class);
+                intent = new Intent(this, SodaQueryActivity.class);
                 break;
             case 1:
                 intent = new Intent(this, RecycleLocationsActivity.class);
@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 intent = new Intent(this, RecycleFlowScreenActivity.class);
                 break;
             default:
-                intent = new Intent(this, ScheduleActivity.class);
+                intent = new Intent(this, SodaQueryActivity.class);
                 break;
         }
 
