@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Recycle Austin" />
-            <option value="$PROJECT_DIR$/soda-android-sdk" />
           </set>
         </option>
       </GradleProjectSettings>

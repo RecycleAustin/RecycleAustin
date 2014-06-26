@@ -7,6 +7,12 @@
     <string name="menu_appteam">App Team</string>
     <string name="title_activity_recycle_flow_screen">Recycle Flow</string>
 
+    <string name="send">Send</string>
+    <string name="enter_address_here">Enter Your Address Here</string>
+    <string name="city">City</string>
+    <string name="zip">Zip Code</string>
+    <string name="title_activity_main">MainActivity</string>
+
     <!--
    App data found at:
    http://austintexas.gov/department/single-stream-recycling

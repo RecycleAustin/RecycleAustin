@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Recycle Austin/Recycle Austin.iml" filepath="$PROJECT_DIR$/Recycle Austin/Recycle Austin.iml" />
       <module fileurl="file://$PROJECT_DIR$/RecycleAustin.iml" filepath="$PROJECT_DIR$/RecycleAustin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/soda-android-sdk/soda-android-sdk.iml" filepath="$PROJECT_DIR$/soda-android-sdk/soda-android-sdk.iml" />
     </modules>
   </component>
 </project>
