@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Recycle Austin/Recycle Austin.iml" filepath="$PROJECT_DIR$/Recycle Austin/Recycle Austin.iml" />
       <module fileurl="file://$PROJECT_DIR$/RecycleAustin.iml" filepath="$PROJECT_DIR$/RecycleAustin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Services/Services.iml" filepath="$PROJECT_DIR$/Services/Services.iml" />
     </modules>
   </component>
 </project>

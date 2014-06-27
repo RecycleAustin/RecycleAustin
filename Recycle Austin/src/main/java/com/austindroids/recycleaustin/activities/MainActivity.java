@@ -83,10 +83,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_appteam:
-                String LicenseInfo = "Jessica Tyler\nNitin Kurian John\nMatt Hernandez";
+                String teamInfo = "Jessica Tyler\nNitin Kurian John\nMatt Hernandez";
                 AlertDialog.Builder LicenseDialog = new AlertDialog.Builder(MainActivity.this);
                 LicenseDialog.setTitle("App Team");
-                LicenseDialog.setMessage(LicenseInfo);
+                LicenseDialog.setMessage(teamInfo);
                 LicenseDialog.show();
                 return true;
             case R.id.action_settings:
