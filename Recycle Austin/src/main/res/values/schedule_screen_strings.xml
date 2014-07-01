@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="schedule_instructions">Click the home icon to automatically find your
+        address and see the local Recycling Schedule for your address.  If the address
+        is not yours, click on the button that says \"Not My Address\" to manually enter it.
+    </string>
+    <string name="not_my_address">Not My Address</string>
+    <string name="collection_week_label">Collection Week</string>
+    <string name="collection_day_label">Collection Day</string>
+
+</resources>
