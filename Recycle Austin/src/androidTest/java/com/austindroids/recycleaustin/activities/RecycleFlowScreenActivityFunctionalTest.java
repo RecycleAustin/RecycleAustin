@@ -13,6 +13,9 @@ import com.austindroids.recycleaustin.R;
 
 /**
  * Created by Dutch on 6/27/2014.
+ *
+ * Provides functional testing of an Activity. It uses TouchUtils to simulate a user actually operating the UI.
+ *
  */
 public class RecycleFlowScreenActivityFunctionalTest
         extends
@@ -21,14 +24,6 @@ public class RecycleFlowScreenActivityFunctionalTest
     private RecycleFlowScreenActivity activity;
     /** The Spinner widget to be tested */
     Spinner mSpinner;
-    TextView spinnerText;
-
-
-    String [] items = new String [] {"paper", "aluminumMetals", "boxCardBoard", "glass", "plastics", "rigidPlastics", "organicMatter"};
-
-
-
-    String [] itemsdesc = new String [] {"Paper", "Aluminum and Metals", "Boxboards and Cardboard", "Glass", "Plastics", "Rigid Plastic Containers (Labeled #1-7)", "Organic Matter"};
 
     public RecycleFlowScreenActivityFunctionalTest() {
         super(RecycleFlowScreenActivity.class);
@@ -55,8 +50,8 @@ public class RecycleFlowScreenActivityFunctionalTest
 
         final int INITIAL_POSITION=0;
         final int FINAL_POSITION=mSpinner.getAdapter().getCount();
-        String expected = "";
-        String actual = "";
+        String expected = "Expected";
+        String actual;
 
         /** Iterates through each item in the Spinner widget */
         for(int i=INITIAL_POSITION;i<=FINAL_POSITION;i++){
@@ -84,9 +79,6 @@ public class RecycleFlowScreenActivityFunctionalTest
 
             /** Getting the currently selected item */
             actual = mSpinner.getSelectedItem().toString();
-
-            /** Getting the text displayed in the TextView widget */
-            expected = itemsdesc[i];
 
             /** Checks, whether currently selected Spinner item and the text displayed are same
              * If same, then the test is success, otherwise failed*/

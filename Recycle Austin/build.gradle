@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-        compile project(':Services')
+    compile project(':Services')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

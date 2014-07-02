@@ -84,10 +84,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
         switch (item.getItemId()) {
             case R.id.menu_appteam:
                 String teamInfo = "Jessica Tyler\nNitin Kurian John\nMatt Hernandez";
-                AlertDialog.Builder LicenseDialog = new AlertDialog.Builder(MainActivity.this);
-                LicenseDialog.setTitle("App Team");
-                LicenseDialog.setMessage(teamInfo);
-                LicenseDialog.show();
+                AlertDialog.Builder infoDialog = new AlertDialog.Builder(MainActivity.this);
+                infoDialog.setTitle("App Team");
+                infoDialog.setMessage(teamInfo);
+                infoDialog.show();
                 return true;
             case R.id.action_settings:
                 Toast.makeText(getApplicationContext(),

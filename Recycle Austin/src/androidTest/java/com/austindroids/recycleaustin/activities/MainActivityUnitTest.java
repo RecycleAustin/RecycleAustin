@@ -9,8 +9,11 @@ import android.widget.ListAdapter;
 
 import com.austindroids.recycleaustin.R;
 
+
 /**
- * Created by Dutch on 6/26/2014.
+ * Provides unit testing of an Activity. This test creates the Activity in isolation, and provides it with a context.
+ *
+ * @author Dutch
  */
 public class MainActivityUnitTest extends
         android.test.ActivityUnitTestCase<MainActivity> {
