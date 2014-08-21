@@ -21,12 +21,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 
 
 public class SodaQueryActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
     private Button gpsButton;
     private Button sendButton;
     private EditText addressField;
@@ -37,12 +39,18 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
     public static final String EMPTY_STRING = new String();
     private LocationClient locationClient;
     private Location location;
+    private LocationRequest locationRequest;
     private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sodaquery);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
 
         locationClient = new LocationClient(this, this, this);
 
@@ -52,10 +60,8 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
             public void onClick(View v) {
                 if (servicesConnected()) {
 
-                    // Get the current location
-                    Location currentLocation = locationClient.getLastLocation();
 
-                    address = getLatLng(currentLocation);
+                    address = getLatLng(location);
                     if (address.equals(EMPTY_STRING)) {
                         Toast.makeText(v.getContext(), "Problem with GPS Locating", Toast.LENGTH_SHORT).show();
                     } else {
@@ -151,14 +157,17 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
 
     @Override
     protected void onStop() {
-        super.onStart();
-        // Connect the client.
+        super.onStop();
+        // Disconnect the client.
+        locationClient.removeLocationUpdates(this);
         locationClient.disconnect();
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        location = locationClient.getLastLocation();
+        locationClient.requestLocationUpdates(locationRequest, this);
     }
 
     @Override
@@ -190,6 +199,12 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
              */
             showErrorDialog(connectionResult.getErrorCode());
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.location = location;
+        Toast.makeText(this, "Location updated", Toast.LENGTH_LONG).show();
     }
 
     // Define a DialogFragment that displays the error dialog
