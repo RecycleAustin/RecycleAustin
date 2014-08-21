@@ -1,10 +1,6 @@
 package com.austindroids.recycleaustin.service;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.austindroids.recycleaustin.beans.PostalAddress;
 import com.austindroids.recycleaustin.sodaquery.StreetDirectionMap;
@@ -40,13 +36,15 @@ public class SodaQueryService {
     private String addr;
     private ArrayList<String> results = new ArrayList<String>();
     private PostalAddress postalAddress;
+    public static final String GPS_LOCATION = "latlng=";
+    public static final String ADDRESS_LCOATION = "address=";
 
     public SodaQueryService(String anAddress) {
         addr = anAddress;
     }
 
-    public ArrayList<String> send() {
-        GoogleHTTPGetRequest googleRequest = new GoogleHTTPGetRequest(addr);
+    public ArrayList<String> send(String locationType) {
+        GoogleHTTPGetRequest googleRequest = new GoogleHTTPGetRequest(addr, locationType);
         googleRequest.execute();
         try {
             googleRequest.get(10, TimeUnit.SECONDS);
@@ -76,12 +74,16 @@ public class SodaQueryService {
 
     private class GoogleHTTPGetRequest extends AsyncTask<Void, Void, Void> {
 
-        private String URLaddress = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+        private String URLaddress = "https://maps.googleapis.com/maps/api/geocode/json?";
         private final String longName = "long_name";
 
-        private GoogleHTTPGetRequest(String addr) {
+        private GoogleHTTPGetRequest(String addr, String locationType) {
             addr = addr.trim().replace(" ", "+");
-            URLaddress += addr + "+Austin,+Texas&key=AIzaSyCVfKDEiicmXo56w2Jrz0GHJ9z4wocMnoM";
+            if(locationType.equals(ADDRESS_LCOATION)) {
+                URLaddress += ADDRESS_LCOATION + addr + "+Austin,+Texas&key=AIzaSyCVfKDEiicmXo56w2Jrz0GHJ9z4wocMnoM";
+            } else if (locationType.equals(GPS_LOCATION)) {
+                URLaddress += GPS_LOCATION + addr + "&key=AIzaSyCVfKDEiicmXo56w2Jrz0GHJ9z4wocMnoM";
+            }
         }
 
         @Override
@@ -96,6 +98,7 @@ public class SodaQueryService {
                 readStream(in);
             } catch (IOException e) {
                 e.printStackTrace();
+                results.add("Google JSON Address Problem");
             } finally {
                 if (connection != null) {
                     connection.disconnect();

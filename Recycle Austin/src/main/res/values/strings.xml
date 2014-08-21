@@ -12,6 +12,7 @@
     <string name="city">City</string>
     <string name="zip">Zip Code</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="latitude_longitude">%1$.8f,%2$.8f</string>
 
     <!--
    App data found at:
@@ -142,6 +143,8 @@
     <string name="yardLeaves">Yard Leaves</string>
     <string name="dummyTrueItem">DUMMY RECYCLABLE ITEM</string>
     <string name="dummyFalseItem">DUMMY NON-RECYCLABLE ITEM</string>
+    <string name="use_my_location">Use my location</string>
+    <string name="or">OR</string>
 
 
 </resources>
