@@ -1,6 +1,5 @@
 package com.austindroids.recycleaustin.activities;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 
 import com.austindroids.recycleaustin.R;
 import com.austindroids.recycleaustin.service.SodaQueryService;
+import com.austindroids.recycleaustin.sodaquery.SodaListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -24,11 +24,11 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class SodaQueryActivity extends FragmentActivity implements GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, SodaListener {
     private Button gpsButton;
     private Button sendButton;
     private EditText addressField;
@@ -49,8 +49,8 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
 
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(7000);
 
         locationClient = new LocationClient(this, this, this);
 
@@ -59,35 +59,15 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
             @Override
             public void onClick(View v) {
                 if (servicesConnected()) {
-
-
                     address = getLatLng(location);
                     if (address.equals(EMPTY_STRING)) {
                         Toast.makeText(v.getContext(), "Problem with GPS Locating", Toast.LENGTH_SHORT).show();
                     } else {
                         ///////////// Show Alert before AsyncTask starts ////////////
-                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                        builder.setMessage("Loading");
-                        AlertDialog alert = builder.create();
-                        alert.setCancelable(false);
-                        alert.show();
                         SodaQueryService sodaQuery = new SodaQueryService(address);
-                        ArrayList<String> results = sodaQuery.send(SodaQueryService.GPS_LOCATION);
-                        alert.dismiss();
-                        if (results.isEmpty() || results.contains("Timeout")) {
-                            Toast.makeText(SodaQueryActivity.this, "Problem contacting database", Toast.LENGTH_LONG).show();
-                        } else if (results.contains("Address Problem") || results.contains("JSON Address Problem")) {
-                            Toast.makeText(SodaQueryActivity.this, "Problem getting address", Toast.LENGTH_LONG).show();
-                        } else if (results.contains("Schedule JSON Exception")) {
-                            Toast.makeText(SodaQueryActivity.this, "No schedule for address", Toast.LENGTH_LONG).show();
-                        } else {
-                            Intent intent = new Intent(SodaQueryActivity.this, ScheduleActivity.class);
-                            intent.putExtra(ScheduleActivity.SCHEDULE_STREET, results.get(0));
-                            intent.putExtra(ScheduleActivity.SCHEDULE_CITY_STATE, results.get(1));
-                            intent.putExtra(ScheduleActivity.SCHEDULE_DAY, results.get(2));
-                            intent.putExtra(ScheduleActivity.SCHEDULE_WEEK, results.get(3));
-                            startActivity(intent);
-                        }
+                        sodaQuery.setContext(SodaQueryActivity.this);
+                        sodaQuery.setSodaListener(SodaQueryActivity.this);
+                        sodaQuery.send(SodaQueryService.GPS_LOCATION);
                     }
                 }
             }
@@ -105,29 +85,10 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
                 if (address.equals("")) {
                     Toast.makeText(v.getContext(), "Please enter a valid address", Toast.LENGTH_SHORT).show();
                 } else {
-                    ///////////// Show Alert before AsyncTask starts ////////////
-                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                    builder.setMessage("Loading");
-                    AlertDialog alert = builder.create();
-                    alert.setCancelable(false);
-                    alert.show();
-
-                    ArrayList<String> results = new SodaQueryService(address).send(SodaQueryService.ADDRESS_LCOATION);
-                    alert.dismiss();
-                    if (results.isEmpty() || results.contains("Timeout")) {
-                        Toast.makeText(SodaQueryActivity.this, "Problem contacting database", Toast.LENGTH_LONG).show();
-                    } else if (results.contains("Address Problem") || results.contains("JSON Address Problem")) {
-                        Toast.makeText(SodaQueryActivity.this, "Problem getting address", Toast.LENGTH_LONG).show();
-                    } else if (results.contains("Schedule JSON Exception")) {
-                        Toast.makeText(SodaQueryActivity.this, "No schedule for address", Toast.LENGTH_LONG).show();
-                    } else {
-                        Intent intent = new Intent(SodaQueryActivity.this, ScheduleActivity.class);
-                        intent.putExtra(ScheduleActivity.SCHEDULE_STREET, results.get(0));
-                        intent.putExtra(ScheduleActivity.SCHEDULE_CITY_STATE, results.get(1));
-                        intent.putExtra(ScheduleActivity.SCHEDULE_DAY, results.get(2));
-                        intent.putExtra(ScheduleActivity.SCHEDULE_WEEK, results.get(3));
-                        startActivity(intent);
-                    }
+                    SodaQueryService sodaQuery = new SodaQueryService(address);
+                    sodaQuery.setContext(SodaQueryActivity.this);
+                    sodaQuery.setSodaListener(SodaQueryActivity.this);
+                    sodaQuery.send(SodaQueryService.ADDRESS_LCOATION);
                 }
             }
         });
@@ -204,7 +165,24 @@ public class SodaQueryActivity extends FragmentActivity implements GooglePlaySer
     @Override
     public void onLocationChanged(Location location) {
         this.location = location;
-        Toast.makeText(this, "Location updated", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void resultsSent(List<String> results) {
+        if (results.isEmpty() || results.contains("Timeout")) {
+            Toast.makeText(SodaQueryActivity.this, "Problem contacting database", Toast.LENGTH_LONG).show();
+        } else if (results.contains("Address Problem") || results.contains("JSON Address Problem")) {
+            Toast.makeText(SodaQueryActivity.this, "Problem getting address", Toast.LENGTH_LONG).show();
+        } else if (results.contains("Schedule JSON Exception")) {
+            Toast.makeText(SodaQueryActivity.this, "No schedule for address", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(SodaQueryActivity.this, ScheduleActivity.class);
+            intent.putExtra(ScheduleActivity.SCHEDULE_STREET, results.get(0));
+            intent.putExtra(ScheduleActivity.SCHEDULE_CITY_STATE, results.get(1));
+            intent.putExtra(ScheduleActivity.SCHEDULE_DAY, results.get(2));
+            intent.putExtra(ScheduleActivity.SCHEDULE_WEEK, results.get(3));
+            startActivity(intent);
+        }
     }
 
     // Define a DialogFragment that displays the error dialog

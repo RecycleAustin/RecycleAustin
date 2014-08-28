@@ -1,8 +1,11 @@
 package com.austindroids.recycleaustin.service;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.austindroids.recycleaustin.beans.PostalAddress;
+import com.austindroids.recycleaustin.sodaquery.SodaListener;
 import com.austindroids.recycleaustin.sodaquery.StreetDirectionMap;
 import com.austindroids.recycleaustin.sodaquery.StreetTypeMap;
 
@@ -24,9 +27,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by mt_slasher on 7/11/14.
@@ -34,45 +34,32 @@ import java.util.concurrent.TimeoutException;
 
 public class SodaQueryService {
     private String addr;
-    private ArrayList<String> results = new ArrayList<String>();
+    private List<String> results = new ArrayList<String>();
     private PostalAddress postalAddress;
     public static final String GPS_LOCATION = "latlng=";
     public static final String ADDRESS_LCOATION = "address=";
+    private Context context;
+    private SodaListener listener;
+    private ProgressDialog dialog;
 
     public SodaQueryService(String anAddress) {
         addr = anAddress;
     }
 
-    public ArrayList<String> send(String locationType) {
+    public void send(String locationType) {
         GoogleHTTPGetRequest googleRequest = new GoogleHTTPGetRequest(addr, locationType);
         googleRequest.execute();
-        try {
-            googleRequest.get(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            results.add("Timeout");
-        }
-        if (!results.contains("Timeout") && !results.contains("JSON Address Problem") && !results.contains("Not in Austin")
-                 && !results.contains("Address Problem")) {
-            SODAHTTPGetRequest sodaRequest = new SODAHTTPGetRequest(postalAddress.getHouseNumber(), postalAddress.getStreet());
-            sodaRequest.execute();
-            try {
-                sodaRequest.get(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                results.add("Timeout");
-            }
-        }
-        return results;
     }
 
-    private class GoogleHTTPGetRequest extends AsyncTask<Void, Void, Void> {
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public void setSodaListener(SodaListener listener) {
+        this.listener = listener;
+    }
+
+    private class GoogleHTTPGetRequest extends AsyncTask<Void, Void, List<String>> {
 
         private String URLaddress = "https://maps.googleapis.com/maps/api/geocode/json?";
         private final String longName = "long_name";
@@ -87,7 +74,16 @@ public class SodaQueryService {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected void onPreExecute() {
+            if (context != null) {
+                dialog = new ProgressDialog(context);
+                dialog.setCancelable(false);
+                dialog.show();
+            }
+        }
+
+        @Override
+        protected List<String> doInBackground(Void... params) {
             HttpURLConnection connection = null;
             try {
                 connection = (HttpURLConnection) new URL(URLaddress).openConnection();
@@ -95,7 +91,7 @@ public class SodaQueryService {
                 connection.connect();
 
                 InputStream in = new BufferedInputStream(connection.getInputStream());
-                readStream(in);
+                results = readStream(in);
             } catch (IOException e) {
                 e.printStackTrace();
                 results.add("Google JSON Address Problem");
@@ -104,10 +100,10 @@ public class SodaQueryService {
                     connection.disconnect();
                 }
             }
-            return null;
+            return results;
         }
 
-        protected void readStream(InputStream in) {
+        protected List<String> readStream(InputStream in) {
             BufferedReader br = null;
             StringBuilder sb = new StringBuilder();
             try {
@@ -152,7 +148,7 @@ public class SodaQueryService {
                 }
             } catch (JSONException e) {
                 results.add("Google JSON Address Problem");
-                return;
+                return results;
             }
             String houseNumber = postalAddress.getHouseNumber();
             String streetName = postalAddress.getStreet();
@@ -164,10 +160,27 @@ public class SodaQueryService {
             } else {
                 results.add("Address Problem");
             }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> results) {
+            if (!results.contains("JSON Address Problem") && !results.contains("Not in Austin")
+                    && !results.contains("Address Problem")) {
+                SODAHTTPGetRequest sodaRequest = new SODAHTTPGetRequest(postalAddress.getHouseNumber(), postalAddress.getStreet());
+                sodaRequest.execute();
+            } else {
+                if (context != null) {
+                    dialog.dismiss();
+                }
+                if (listener != null) {
+                    listener.resultsSent(results);
+                }
+            }
         }
     }
 
-    private class SODAHTTPGetRequest extends AsyncTask<Void, Void, Void> {
+    private class SODAHTTPGetRequest extends AsyncTask<Void, Void, List<String>> {
 
         private String URLaddress = "https://data.austintexas.gov/resource/rfif-mmvg.json?$select=collection_day,collection_week&$where=";
         private String houseNo;
@@ -180,7 +193,7 @@ public class SodaQueryService {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected List<String> doInBackground(Void... params) {
             HttpURLConnection connection = null;
             String[] addrComponents = addr.split("\\s");
             List<String> addrComponentsParsed = new LinkedList<String>(Arrays.asList(addrComponents));
@@ -218,7 +231,7 @@ public class SodaQueryService {
                 connection.connect();
 
                 InputStream in = new BufferedInputStream(connection.getInputStream());
-                readStream(in);
+                results = readStream(in);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -226,10 +239,10 @@ public class SodaQueryService {
                     connection.disconnect();
                 }
             }
-            return null;
+            return results;
         }
 
-        protected void readStream(InputStream in) {
+        protected List<String> readStream(InputStream in) {
             BufferedReader br = null;
             StringBuilder sb = new StringBuilder();
             try {
@@ -259,11 +272,22 @@ public class SodaQueryService {
                 collectionWeek = jObj.getString("collection_week");
             } catch (JSONException e) {
                 results.add("Schedule JSON Exception");
-                return;
+                return results;
             }
 
             results.add("Collection Day: " + collectionDay);
             results.add("Collection Week: " + collectionWeek);
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> results) {
+            if (context != null) {
+                dialog.dismiss();
+            }
+            if (listener != null) {
+                listener.resultsSent(results);
+            }
         }
     }
 }
